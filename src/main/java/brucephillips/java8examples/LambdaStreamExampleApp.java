@@ -6,6 +6,7 @@ import java.util.function.Predicate;
 
 /**
  * See: https://blog.idrsolutions.com/2014/11/java-8-streams-explained-5-minutes/
+ * See: http://www.programcreek.com/2014/01/how-function-interfaces-work-in-java-8/
  * @author brucephillips
  */
 public class LambdaStreamExampleApp {
