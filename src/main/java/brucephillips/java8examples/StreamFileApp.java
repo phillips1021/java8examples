@@ -22,7 +22,11 @@ public class StreamFileApp {
      * @throws IOException 
      */
     public static void main(String[] args) throws IOException {
+        
+        System.out.println("StreamFileApp started...");
+        
         Stream<String> lines = null;
+        
         if (args.length == 1) {
             lines = Files.lines(Paths.get(args[0]));
         } else {
@@ -36,6 +40,10 @@ public class StreamFileApp {
         }
 
         new StreamFileApp().parse(lines, "testoutput.txt");
+        
+        System.out.println("Output file testouput.txt written...");
+        
+        System.out.println("StreamFileApp finished!");
 
     }
 
