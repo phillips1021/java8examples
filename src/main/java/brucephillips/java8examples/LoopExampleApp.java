@@ -7,7 +7,10 @@ package brucephillips.java8examples;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * See: http://www.voxxed.com/blog/2015/03/swerving-away-from-loops-in-java-8/
@@ -26,6 +29,103 @@ public class LoopExampleApp {
 
     public void run() {
 
+        List<Article> articles = getArticles();
+
+        Article javaArticle = getFirstJavaArticle(articles);
+
+        System.out.println("Title of Java article is " + javaArticle.getTitle());
+
+        Optional<Article> javaArticleJava8 = getFirstJavaArticleJava8(articles);
+
+        System.out.println("Title of Java article is using Java 8 is " + javaArticleJava8.get().getTitle());
+
+        List<Article> javaArticles = getAllJavaArticles(articles);
+
+        System.out.println("All Java articles: " + javaArticles);
+
+        Map<String, List<Article>> authorArticleMap = groupByAuthor(articles);
+
+        System.out.println("Articles grouped by author: " + authorArticleMap);
+        
+        Set<String> tagsUsedInArticles = getDistinctTags(articles) ;
+         
+        System.out.println("Tags used in articles: " + tagsUsedInArticles );
+
+    }
+
+    /**
+     * Demonstrate the old for loop to find first Article object that has Java
+     * as a tag.
+     *
+     * @param articles
+     * @return
+     */
+    private Article getFirstJavaArticle(List<Article> articles) {
+
+        for (Article article : articles) {
+            if (article.getTags().contains("Java")) {
+                return article;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Demonstrates new way of using stream and filter and findFirst to find
+     * first Article object that has Java as a tag.
+     *
+     * @param articles
+     * @return
+     */
+    private Optional<Article> getFirstJavaArticleJava8(List<Article> articles) {
+
+        return articles.stream()
+                .filter(article -> article.getTags().contains("Java"))
+                .findFirst();
+
+    }
+
+    /**
+     * Use new Java 8 stream, filter, and collect methods to get all Article
+     * objects from collection that have a tag of Java.
+     *
+     * @param articles
+     * @return
+     */
+    private List<Article> getAllJavaArticles(List<Article> articles) {
+        return articles.stream()
+                .filter(article -> article.getTags().contains("Java"))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Use new Java 8 stream, collect, and groupingBy methods to create a map
+     * where the key is the author name and the value is collection of Articles
+     * by that author.
+     *
+     * @param articles
+     * @return
+     */
+    private Map<String, List<Article>> groupByAuthor(List<Article> articles) {
+        return articles.stream()
+                .collect(Collectors.groupingBy(Article::getAuthor));
+    }
+    
+    /**
+     * Use stream, flatMap, and collect to create a Set of Strings
+     * where each String is an Article tag value.
+     * @param articles
+     * @return 
+     */
+    public Set<String> getDistinctTags(List<Article> articles) {
+    return articles.stream()
+        .flatMap(article -> article.getTags().stream())
+        .collect(Collectors.toSet());
+}
+
+    private List<Article> getArticles() {
+
         List<String> tags1 = new ArrayList<>();
         tags1.add("Java");
 
@@ -41,33 +141,14 @@ public class LoopExampleApp {
         Article article2 = new Article("Perl Examples", "Bob Smith", tags2);
         articles.add(article2);
 
-        Article javaArticle = getFirstJavaArticle(articles);
+        Article article3 = new Article("Java 8 For Dummies", "Bruce Phillips", tags1);
+        articles.add(article3);
 
-        System.out.println("Title of Java article is " + javaArticle.getTitle());
-        
-        Optional<Article> javaArticleJava8 = getFirstJavaArticleJava8(articles);
-        
-        System.out.println("Title of Java article is using Java 8 is " + javaArticleJava8.get().getTitle());
+        Article article4 = new Article("Perl for Dummies", "Bob Smith", tags2);
+        articles.add(article4);
 
-    }
+        return articles;
 
-    private Article getFirstJavaArticle(List<Article> articles) {
-
-        for (Article article : articles) {
-            if (article.getTags().contains("Java")) {
-                return article;
-            }
-        }
-
-        return null;
-    }
-
-    private Optional<Article> getFirstJavaArticleJava8(List<Article> articles) {
-        
-        return articles.stream()
-                .filter(article -> article.getTags().contains("Java"))
-                .findFirst();
-        
     }
 
     private class Article {
@@ -93,6 +174,12 @@ public class LoopExampleApp {
         public List<String> getTags() {
             return tags;
         }
+
+        @Override
+        public String toString() {
+            return "Article{" + "title=" + title + ", author=" + author + ", tags=" + tags + '}';
+        }
+
     }
 
 }
