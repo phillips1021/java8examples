@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 import java.util.function.Function;
 import java.util.Optional;
 
-
 /**
  *
  * @author brucephillips
@@ -53,12 +52,31 @@ public class CollectionsApp {
         final long countFriendsB = friends.stream().filter(startsWithLetter.apply("B")).count();
 
         System.out.println("Number of friends start with B is " + countFriendsB);
-        
+
         final String startingLetter = "S";
+
+        final Optional<String> foundName = friends.stream().filter(name -> name.startsWith(startingLetter)).findFirst();
+
+        System.out.println(String.format("A name starting with %s: %s", startingLetter, foundName.orElse("No name found")));
+
+        System.out.println();
+
+        System.out.println("Total number of characters in all names: " + friends.stream()
+                .mapToInt(name -> name.length())
+                .sum());
+
+        System.out.println();
+
+        final Optional<String> aLongName = friends.stream()
+                .reduce((name1, name2)
+                        -> name1.length() >= name2.length() ? name1 : name2);
+
+        aLongName.ifPresent(name
+                -> System.out.println(String.format("A longest name: %s", name)));
         
-        final Optional<String> foundName = friends.stream().filter(name -> name.startsWith(startingLetter)).findFirst() ;
+        System.out.println();
         
-        System.out.println( String.format("A name starting with %s: %s", startingLetter, foundName.orElse("No name found"))) ;
+        System.out.println(String.join(", ", friends));
 
     }
 
