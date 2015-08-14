@@ -32,7 +32,7 @@ public class FunctionalInterfaceApp {
 
         PersonFactory<Person> personFactory = Person::new;
         
-        Person person = personFactory.create("Peter", "Parker");
+        Person person = personFactory.create("Peter", "Parker", 27);
         
         System.out.println(person);
 

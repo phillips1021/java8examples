@@ -11,6 +11,6 @@ package brucephillips.java8examples;
  */
 interface PersonFactory<P extends Person> {
 
-    P create(String firstName, String lastName);
+    P create(String firstName, String lastName, int age);
 
 }
