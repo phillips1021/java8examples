@@ -5,10 +5,15 @@
  */
 package brucephillips.java8examples;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import static java.util.Comparator.comparing;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 /**
@@ -33,12 +38,28 @@ public class ComparatorApp {
         printPeople("Sorted in ascending order by age: ", ascendingAge);
 
         final Function<Person, Integer> byAge = person -> person.getAge();
-        
+
         final Function<Person, String> byTheirName = person -> person.getFirstName();
-        
+
         printPeople("Sorted in ascending order by age and name: ", people.stream()
                 .sorted(comparing(byAge).thenComparing(byTheirName))
                 .collect(toList()));
+
+        List<Person> olderThan20 = people.stream()
+                .filter(person -> person.getAge() > 20)
+                .collect(Collectors.toList());
+
+        System.out.println("People older than 20: " + olderThan20);
+
+        Map<Integer, List<Person>> peopleByAge = people.stream()
+                .collect(Collectors.groupingBy(Person::getAge));
+
+        System.out.println("Grouped by age: " + peopleByAge);
+
+        Map<Integer, List<String>> nameOfPeopleByAge = people.stream()
+                .collect(groupingBy(person -> person.getAge(), mapping(person -> person.getFirstName(), toList())));
+        
+        System.out.println("People grouped by age: " + nameOfPeopleByAge);
 
     }
 
