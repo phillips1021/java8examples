@@ -4,9 +4,14 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 
+/**
+ * Defines a dummy implementation 
+ * of getting a stock's price.
+ * @author brucephillips
+ */
 public class StockPriceDummy {
 
-    public static BigDecimal getStockPrice(final String ticker) {
+    public static BigDecimal getStockPrice(final String stockSymbol) {
         
         Random randomGenerator = new Random();
         

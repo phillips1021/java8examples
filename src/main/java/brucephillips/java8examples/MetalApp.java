@@ -5,9 +5,23 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 
-
+/**
+ * Demonstrates how to use a Predicate with a filter
+ * to filter a Stream.  Based on Chapter 4 of 
+ * Functional Programming in Java 
+ * (https://pragprog.com/book/vsjava8/functional-programming-in-java)
+ * @author brucephillips
+ */
 public class MetalApp {
 
+    /**
+     * Get the total value of all metals in the list
+     * that match the Predicate provided.
+     * @param metals List of Metal objects
+     * @param metalSelector - Predicate that when true
+     * means select that Metal object.
+     * @return 
+     */
     public static int totalMetalValues(final List<Metal> metals,
             final Predicate<Metal> metalSelector) {
         
@@ -18,6 +32,7 @@ public class MetalApp {
         
     }
 
+    
     public static void main(final String[] args) {
         
         List<Metal> metals = Arrays.asList(new Metal(Metal.MetalType.GOLD, 500),
